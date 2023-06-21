@@ -66,12 +66,32 @@ namespace DE3.NewFolder1
 
         private void AddCart_Click(object sender, RoutedEventArgs e)
         {
-            var selectedproduct = (Product)Items.SelectedItem;
-            if (selectedproduct != null)
-            {
-                cart.Add(selectedproduct);
-                Cart2.Visibility = Visibility.Visible;
-            }
+var selectedItem = (Product)View.SelectedItem;
+    if (selectedItem != null)
+    {
+        // Создаем копию выбранного товара
+        Product cartItem = new Product
+        {
+            ProductName = selectedItem.ProductName,
+            ProductCost = selectedItem.ProductCost,
+            ProductNumber = 1, // Устанавливаем количество равным 1
+            ProductDiscount = selectedItem.ProductDiscount,
+            TotalAmount = selectedItem.ProductCost // Устанавливаем итоговую стоимость равной стоимости товара
+        };
+
+        // Уменьшаем количество выбранного товара на 1
+        selectedItem.ProductNumber--;
+
+        // Если количество товара стало нулевым, удаляем его из списка
+        if (selectedItem.ProductNumber <= 0)
+        {
+            products.Remove(selectedItem);
+        }
+
+        // Добавляем копию товара в корзину
+        cartItems.Add(cartItem);
+
+        MessageBox.Show("Товар успешно добавлен в корзину.", "Добавлено в корзину", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void Edit_Click(object sender, RoutedEventArgs e)
